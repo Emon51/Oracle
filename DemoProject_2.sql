@@ -1,3 +1,4 @@
+-----Money transfer from one account to another account----
 
 CREATE TABLE accounts (
     account_id NUMBER PRIMARY KEY,
@@ -23,7 +24,7 @@ CREATE OR REPLACE PROCEDURE transfer_money(
     
 BEGIN
     -- Set transaction isolation level to SERIALIZABLE.
-    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+    SET TRANSACTION ISOLATION LEVEL READ COMMITTED; -- Levels of Isolation:  READ COMMITTED, READ UNCOMMITED, SERIALIZABLE;
 
     -- Begin the transaction explicitly
     BEGIN
