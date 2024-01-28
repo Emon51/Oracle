@@ -59,11 +59,15 @@ RENAME TO temp;
 --------------------------------------------------------------------------------
 SELECT * FROM temp;
 
---Solution
+--Solution_1
 
 SELECT CASE WHEN translations IS NULL THEN comments ELSE translations END AS output
 FROM temp;
 
+--Solution_2
+
+SELECT COALESCE(translations, comments) AS output --If translations is null then select comments else translations.
+FROM temp;
 
 
 
