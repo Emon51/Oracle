@@ -1,6 +1,5 @@
 
 
-
 /* Write a SQL query to display only the details of employees who either earn the highest salary
 or the lowest salary in each department from the employee table */
 
@@ -45,7 +44,7 @@ select * from employee;
 
 with cte as (
     select e.*, 
-    rank() over (partition by e.dept_name order by e.salary desc) as max_sal_rnk,
+    rank() over (partition by e.dept_name order by e.salary desc) as max_sal_rnk, --row_number() is an another option
     rank() over (partition by e.dept_name order by e.salary asc) as min_sal_rnk
     from employee e
 )
@@ -53,6 +52,29 @@ with cte as (
 select c.emp_id, c.emp_name, c.dept_name, c.salary
 from cte c
 where c.max_sal_rnk = 1 or c.min_sal_rnk = 1;
+
+--------------------------------------------------------------------------------------
+
+with cte as (
+    select e.*, 
+    row_number() over (partition by e.dept_name order by e.salary desc) as max_sal_rn,
+    row_number() over (partition by e.dept_name order by e.salary asc) as min_sal_rn
+    from employee e
+),
+
+cte1 as (select c.emp_id, c.emp_name, c.dept_name, c.salary,
+row_number() over(partition by c.dept_name order by c.salary desc) as rn
+from cte c
+where c.max_sal_rn = 1 or c.min_sal_rn = 1)
+
+select c1.dept_name, 
+       sum(case when c1.rn = 1 then salary end) as max_salary,
+       sum(case when c1.rn = 2 then salary end) as min_salary
+from cte1 c1
+group by c1.dept_name;
+       
+       
+
 
 
 
