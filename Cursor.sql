@@ -15,7 +15,7 @@ CREATE OR REPLACE PROCEDURE show_details AS
     v_salary Employee.salary%TYPE;
 
 BEGIN
-    OPEN my_cursor;
+    OPEN my_cursor; ---------Semicolon_must_placed_here
     
     LOOP
         FETCH my_cursor INTO v_id, v_name, v_salary;
